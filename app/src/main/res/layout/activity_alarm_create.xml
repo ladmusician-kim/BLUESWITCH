@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/transparent"
                 android:text="SAVE"
                 android:textSize="15sp"
@@ -71,7 +71,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
-            android:id="@+id/alarmcreate_rl_ringtone">
+            android:id="@+id/alarmcreate_rl_ringtone"
+            android:background="@drawable/common_cell_selector">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,6 +81,14 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:id="@+id/alarmcreate_txt_ringtone" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:id="@+id/alarmcreate_txt_ringtone_title" />
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
