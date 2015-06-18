@@ -17,6 +17,8 @@
         </activity>
         <activity android:name=".Alarm.ActivityCreateAlarm">
         </activity>
+        <activity android:name=".Alarm.ActivityRepeat">
+        </activity>
     </application>
 
 </manifest>

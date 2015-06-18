@@ -1,6 +1,20 @@
 <resources>
     <string name="app_name">GOQUALSWITCH</string>
 
+    <string name="shared_preference_name">com.goqual.blueswitchinfo</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="key_repeat_sun">repeat_sun</string>
+    <string name="key_repeat_mon">repeat_mon</string>
+    <string name="key_repeat_tue">repeat_tue</string>
+    <string name="key_repeat_wed">repeat_wed</string>
+    <string name="key_repeat_thur">repeat_thur</string>
+    <string name="key_repeat_fri">repeat_fri</string>
+    <string name="key_repeat_sat">repeat_sat</string>
+
+    <string name="key_panelwidth">panelWidth</string>
+    <string name="key_panelheight">panelHeight</string>
+    <string name="key_didSplash">didSplash</string>
 </resources>
