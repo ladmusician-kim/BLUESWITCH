@@ -47,24 +47,26 @@ public class ActivityCreateAlarm extends Activity {
     @InjectView(R.id.alarmcreate_btn_cancel) Button mBtnCancel;
     @OnClick({ R.id.alarmcreate_btn_cancel, R.id.alarmcreate_rl_ringtone, R.id.alarmcreate_rl_repeat, R.id.alarmcreate_btn_save })
     void onClickButton (View view) {
-        switch(view.getId()) {
-            case R.id.alarmcreate_rl_repeat:
-                setRepeat();
-                break;
-            case R.id.alarmcreate_rl_ringtone:
-                showRingtonePickerDialog();
-                break;
-            case R.id.alarmcreate_btn_save:
-                long returnVal = createAlarmInDB();
-                if (returnVal != -1) {
-                    setAlarm(returnVal);
-                }
-                break;
+    switch(view.getId()) {
+        case R.id.alarmcreate_rl_repeat:
+            setRepeat();
+            break;
+        case R.id.alarmcreate_rl_ringtone:
+            showRingtonePickerDialog();
+            break;
+        case R.id.alarmcreate_btn_save:
+            long returnVal = createAlarmInDB();
+            if (returnVal != -1) {
+                setAlarm(returnVal);
+            }
+            break;
         case R.id.alarmcreate_btn_cancel:
-        finish();
-        break;
+            finish();
+            break;
         default:
-        break;
+            break;
+
+
     }
 }
     // 알람 등록 IN DB
@@ -72,6 +74,7 @@ public class ActivityCreateAlarm extends Activity {
         int hour = mTPTriggerTime.getCurrentHour();
         int min = mTPTriggerTime.getCurrentMinute();
 
+        Log.e(TAG, "INSERT DB RINGTONE : " + mRingtoneUri);
         AlarmDTO alarm = new AlarmDTO(hour, min, mRingtoneUri, mArrBoolIsRepeat);
         alarm.save();
 
@@ -81,6 +84,8 @@ public class ActivityCreateAlarm extends Activity {
         AlarmDTO alarm = AlarmDTO.findById(AlarmDTO.class, id);
         CalculateTriggerTime calculateTriggerTime = new CalculateTriggerTime(alarm.getHour(), alarm.getMin());
         long triggerTime = calculateTriggerTime.calSetTimerSecond();
+
+        Log.e(TAG, "INTENT RINGTONE : " + alarm.getRingtone());
 
         Intent alarmIntent = new Intent(mContext, AlarmService.class);
         alarmIntent.setAction(getString(R.string.ACTION_ALARM));
@@ -202,6 +207,9 @@ public class ActivityCreateAlarm extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_create);
         ButterKnife.inject(this);
+
+        mTxtRingtoneTitle.setText(getString(R.string.BASIC_RINGTONE));
+        mRingtoneUri = getString(R.string.BASIC_RINGTONE);
 
         // 최기화
         Arrays.fill(mArrBoolIsRepeat, false);

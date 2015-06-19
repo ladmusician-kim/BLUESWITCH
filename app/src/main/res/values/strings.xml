@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">GOQUALSWITCH</string>
+    <string name="BASIC_RINGTONE">Basic Ringtone</string>
 
     <string name="shared_preference_name">com.goqual.blueswitchinfo</string>
 
     <string name="ACTION_ALARM">com.goqual.goqualswitch.action.alarm</string>
+    <string name="ACTION_ALARM_KLAXON">com.goqual.goqualswitch.action.alarm.klaxon</string>
+
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
