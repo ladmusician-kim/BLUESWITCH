@@ -29,18 +29,6 @@ public class ActivityRepeat extends Activity {
 
     private boolean[] mArrBoolIsRepeat = new boolean[7];
 
-    enum DayOfWeek {
-        SUN,
-        MON,
-        TUE,
-        WED,
-        THUR,
-        FRI,
-        SAT,
-        NONE
-    }
-    DayOfWeek dayOfWeek = DayOfWeek.NONE;
-
     private RelativeLayout.LayoutParams mParamCheckImg;
 
     @InjectViews({ R.id.alarmrepeat_img_sun, R.id.alarmrepeat_img_mon, R.id.alarmrepeat_img_tue,

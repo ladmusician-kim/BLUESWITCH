@@ -1,6 +1,8 @@
 package clom.goqual.goqualswitch.Alarm;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
@@ -11,13 +13,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.Arrays;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import clom.goqual.blelibrary.CalculateTriggerTime;
+import clom.goqual.goqualswitch.DTO.AlarmDTO;
 import clom.goqual.goqualswitch.R;
+import clom.goqual.goqualswitch.Service.AlarmService;
 
 /**
  * Created by admin on 2015. 6. 18..
@@ -31,14 +37,15 @@ public class ActivityCreateAlarm extends Activity {
 
     private String mRingtoneUri = "";
     private String mRingtoneTitle = "";
-
     private boolean[] mArrBoolIsRepeat = new boolean[7];
+    private AlarmManager mAlarmManger;
 
     @InjectView(R.id.alarmcreate_txt_ringtone_title) TextView mTxtRingtoneTitle;
     @InjectView(R.id.alarmcreate_txt_repeat_result) TextView mTxtRepeatResult;
+    @InjectView(R.id.alarmcreate_tp_trigger_time) TimePicker mTPTriggerTime;
 
     @InjectView(R.id.alarmcreate_btn_cancel) Button mBtnCancel;
-    @OnClick({ R.id.alarmcreate_btn_cancel, R.id.alarmcreate_rl_ringtone, R.id.alarmcreate_rl_repeat })
+    @OnClick({ R.id.alarmcreate_btn_cancel, R.id.alarmcreate_rl_ringtone, R.id.alarmcreate_rl_repeat, R.id.alarmcreate_btn_save })
     void onClickButton (View view) {
         switch(view.getId()) {
             case R.id.alarmcreate_rl_repeat:
@@ -47,12 +54,41 @@ public class ActivityCreateAlarm extends Activity {
             case R.id.alarmcreate_rl_ringtone:
                 showRingtonePickerDialog();
                 break;
-            case R.id.alarmcreate_btn_cancel:
-                finish();
+            case R.id.alarmcreate_btn_save:
+                long returnVal = createAlarmInDB();
+                if (returnVal != -1) {
+                    setAlarm(returnVal);
+                }
                 break;
-            default:
-                break;
-        }
+        case R.id.alarmcreate_btn_cancel:
+        finish();
+        break;
+        default:
+        break;
+    }
+}
+    // 알람 등록 IN DB
+    long createAlarmInDB() {
+        int hour = mTPTriggerTime.getCurrentHour();
+        int min = mTPTriggerTime.getCurrentMinute();
+
+        AlarmDTO alarm = new AlarmDTO(hour, min, mRingtoneUri, mArrBoolIsRepeat);
+        alarm.save();
+
+        return alarm.getId();
+    }
+    void setAlarm(long id) {
+        AlarmDTO alarm = AlarmDTO.findById(AlarmDTO.class, id);
+        CalculateTriggerTime calculateTriggerTime = new CalculateTriggerTime(alarm.getHour(), alarm.getMin());
+        long triggerTime = calculateTriggerTime.calSetTimerSecond();
+
+        Intent alarmIntent = new Intent(mContext, AlarmService.class);
+        alarmIntent.setAction(getString(R.string.ACTION_ALARM));
+        alarmIntent.putExtra(getString(R.string.key_alarm_id), id);
+        alarmIntent.putExtra(getString(R.string.key_alarm_ringtone), alarm.getRingtone());
+        PendingIntent pi = PendingIntent.getService(mContext, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        getAlarmManager().setRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_DAY, pi);
+        Log.e(TAG, "SET ALARM");
     }
 
     // 반복
@@ -95,7 +131,6 @@ public class ActivityCreateAlarm extends Activity {
         }
     }
 
-
     void dealRepeat(Intent data) {
         String repeatString = "";
         boolean isAllChecked = true;
@@ -106,14 +141,6 @@ public class ActivityCreateAlarm extends Activity {
         mArrBoolIsRepeat[4] = data.getBooleanExtra(getString(R.string.key_repeat_thur), false);
         mArrBoolIsRepeat[5] = data.getBooleanExtra(getString(R.string.key_repeat_fri), false);
         mArrBoolIsRepeat[6] = data.getBooleanExtra(getString(R.string.key_repeat_sat), false);
-
-        Log.e(TAG, "VALUE : " + mArrBoolIsRepeat[0]);
-        Log.e(TAG, "VALUE : " + mArrBoolIsRepeat[1]);
-        Log.e(TAG, "VALUE : " + mArrBoolIsRepeat[2]);
-        Log.e(TAG, "VALUE : " + mArrBoolIsRepeat[3]);
-        Log.e(TAG, "VALUE : " + mArrBoolIsRepeat[4]);
-        Log.e(TAG, "VALUE : " + mArrBoolIsRepeat[5]);
-        Log.e(TAG, "VALUE : " + mArrBoolIsRepeat[6]);
 
         for(int i = 0; i < 7; i ++) {
             if (mArrBoolIsRepeat[i]) {
@@ -162,11 +189,9 @@ public class ActivityCreateAlarm extends Activity {
     void dealRingtone(Intent data) {
         Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
         mRingtoneUri = uri.toString();
-        Log.e(TAG, "RINGTONE URL: " + mRingtoneUri);
         if (uri != null) {
             Ringtone ringtone = RingtoneManager.getRingtone(this, uri);
             mRingtoneTitle = ringtone.getTitle(this);
-            Log.e(TAG, "RINGTONE TITLE: " + mRingtoneTitle);
             mTxtRingtoneTitle.setText(mRingtoneTitle);
             mIsValidateSound = true;
         }
@@ -190,5 +215,12 @@ public class ActivityCreateAlarm extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    private AlarmManager getAlarmManager() {
+        if (mAlarmManger == null) {
+            mAlarmManger = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        }
+        return mAlarmManger;
     }
 }
