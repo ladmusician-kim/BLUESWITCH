@@ -18,8 +18,11 @@ public class AlarmService extends Service {
         Log.e(TAG, "GOT Service");
         String action = intent.getAction();
         if(action.equals(getString(R.string.ACTION_ALARM))) {
+            Intent viewIntent = new Intent(this,AlarmViewService.class);
+            viewIntent.setAction(getString(R.string.ACTION_ALARM_VIEW));
+            startService(viewIntent);
+
             String ringtoneURI = intent.getStringExtra(getString(R.string.key_alarm_ringtone));
-            Log.e(TAG, "SERVICE RINGTONE : " + ringtoneURI);
             Intent klaxonIntent = new Intent(this,AlarmKlaxonService.class);
             klaxonIntent.setAction(getString(R.string.ACTION_ALARM_KLAXON));
             klaxonIntent.putExtra(getString(R.string.key_alarm_ringtone), ringtoneURI);

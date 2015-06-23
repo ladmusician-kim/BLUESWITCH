@@ -99,7 +99,8 @@ public class AlarmKlaxonService extends Service implements MusicFocusable, Media
     void createMediaPlayerIfNeeded() {
         if (mPlayer == null) {
             Log.e(TAG, "RINGTONE : " + mRingtoneURI);
-            if (mRingtoneURI.equals(R.string.BASIC_RINGTONE)) {
+            if (mRingtoneURI.equals(getString(R.string.BASIC_RINGTONE))) {
+                Log.e(TAG, "BASIC RINGTONE RING");
                 mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.hangouts_incoming_call);
             } else {
                 try {
@@ -171,6 +172,17 @@ public class AlarmKlaxonService extends Service implements MusicFocusable, Media
         } else{
             mAudioFocus = AudioFocus.Focused; // no focus feature, so we always "have" audio focus
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e(TAG, "KLAXON SERVICE DESTROY");
+        if(mPlayer.isPlaying()) mPlayer.stop();
+        if(mPlayer != null) mPlayer = null;
+
+        relaxResources(true);
+
+        super.onDestroy();
     }
 
     @Override

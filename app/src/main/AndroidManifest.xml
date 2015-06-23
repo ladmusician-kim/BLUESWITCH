@@ -3,6 +3,7 @@
     package="clom.goqual.goqualswitch" >
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
@@ -45,6 +46,14 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
                 <action android:name="com.goqual.goqualswitch.action.alarm.klaxon"></action>
+            </intent-filter>
+        </service>
+        <service android:name=".Service.AlarmViewService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="com.goqual.goqualswitch.action.alarm.view"></action>
             </intent-filter>
         </service>
     </application>

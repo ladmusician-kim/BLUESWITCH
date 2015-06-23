@@ -6,6 +6,7 @@
 
     <string name="ACTION_ALARM">com.goqual.goqualswitch.action.alarm</string>
     <string name="ACTION_ALARM_KLAXON">com.goqual.goqualswitch.action.alarm.klaxon</string>
+    <string name="ACTION_ALARM_VIEW">com.goqual.goqualswitch.action.alarm.view</string>
 
 
     <string name="hello_world">Hello world!</string>

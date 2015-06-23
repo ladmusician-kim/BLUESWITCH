@@ -74,7 +74,6 @@ public class ActivityCreateAlarm extends Activity {
         int hour = mTPTriggerTime.getCurrentHour();
         int min = mTPTriggerTime.getCurrentMinute();
 
-        Log.e(TAG, "INSERT DB RINGTONE : " + mRingtoneUri);
         AlarmDTO alarm = new AlarmDTO(hour, min, mRingtoneUri, mArrBoolIsRepeat);
         alarm.save();
 
