@@ -19,7 +19,7 @@
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="clom.goqual.goqualswitch" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".ActivityMain"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +29,8 @@
         <activity android:name=".Alarm.ActivityCreateAlarm">
         </activity>
         <activity android:name=".Alarm.ActivityRepeat">
+        </activity>
+        <activity android:name=".Notification.NotificationHandler">
         </activity>
 
         <!-- service -->
@@ -54,6 +56,30 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
                 <action android:name="com.goqual.goqualswitch.action.alarm.view"></action>
+            </intent-filter>
+        </service>
+        <service android:name=".Service.NotificationService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="com.goqual.goqualswitch.action.noti"></action>
+            </intent-filter>
+        </service>
+        <service android:name=".Service.NotificationTurnOffService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="com.goqual.goqualswitch.action.noti.turn.off"></action>
+            </intent-filter>
+        </service>
+        <service android:name=".Service.NotificationTurnOnService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="com.goqual.goqualswitch.action.noti.turn.on"></action>
             </intent-filter>
         </service>
     </application>

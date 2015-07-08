@@ -1,10 +1,13 @@
 package clom.goqual.goqualswitch;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.widget.Button;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -13,17 +16,28 @@ import clom.goqual.goqualswitch.Alarm.ActivityCreateAlarm;
 import clom.goqual.goqualswitch.SharedPreference.InfoSharedPreference;
 
 
-public class MainActivity extends FragmentActivity {
+public class ActivityMain extends FragmentActivity {
     private static final String TAG = "ACTIVITY_MAIN";
+    private Context mContext;
     private InfoSharedPreference mDeviceInfo;
+    private NotificationManager mNotiMng = null;
 
     @InjectView(R.id.btn_alarm) Button mBtnAlarm;
-    @OnClick({ R.id.btn_alarm })
+    @InjectView(R.id.btn_noti) Button mBtnNoti;
+    @OnClick({ R.id.btn_alarm, R.id.btn_noti })
     void onClickButton (Button btn) {
         switch(btn.getId()) {
             case R.id.btn_alarm:
                 Intent alarmIntent = new Intent(getApplicationContext(), ActivityCreateAlarm.class);
                 startActivity(alarmIntent);
+                break;
+            case R.id.btn_noti:
+                Intent notiIntent = new Intent(getString(R.string.ACTION_NOTI));
+                notiIntent.setAction(getString(R.string.ACTION_NOTI));
+                notiIntent.putExtra(getString(R.string.key_noti_switch_turn_on), false);
+                startService(notiIntent);
+
+                Toast.makeText(ActivityMain.this, "Notification Registered.", Toast.LENGTH_SHORT).show();
                 break;
             default:
                 break;
@@ -53,6 +67,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getApplicationContext();
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         handleSharedPreference();

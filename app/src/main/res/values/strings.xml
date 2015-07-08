@@ -8,6 +8,12 @@
     <string name="ACTION_ALARM_KLAXON">com.goqual.goqualswitch.action.alarm.klaxon</string>
     <string name="ACTION_ALARM_VIEW">com.goqual.goqualswitch.action.alarm.view</string>
 
+    <string name="ACTION_NOTI">com.goqual.goqualswitch.action.noti</string>
+    <string name="ACTION_NOTI_TURN_ON">com.goqual.goqualswitch.action.noti.turn.on</string>
+    <string name="ACTION_NOTI_TURN_OFF">com.goqual.goqualswitch.action.noti.turn.off</string>
+
+    <string name="key_noti_switch_turn_on">noti_switch_turn_on</string>
+
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -26,4 +32,9 @@
     <string name="key_panelwidth">panelWidth</string>
     <string name="key_panelheight">panelHeight</string>
     <string name="key_didSplash">didSplash</string>
+
+    <string name="noti_ticket">Blueswitch easy turn on/off mode</string>
+    <string name="noti_title">Blueswitch easy turn on/off mode</string>
+    <string name="noti_turn_on">If you want to turn off the light, click this!</string>
+    <string name="noti_turn_off">If you want to turn on the light, click this!</string>
 </resources>
