@@ -1,15 +1,12 @@
 package clom.goqual.goqualswitch;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -19,7 +16,7 @@ import clom.goqual.goqualswitch.Alarm.ActivityCreateAlarm;
 import clom.goqual.goqualswitch.SharedPreference.InfoSharedPreference;
 
 
-public class ActivityMain extends AppCompatActivity {
+public class ActivityMain extends Activity {
     private static final String TAG = "ACTIVITY_MAIN";
     private Context mContext;
     private InfoSharedPreference mDeviceInfo;
@@ -74,16 +71,6 @@ public class ActivityMain extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         handleSharedPreference();
-
-        RelativeLayout rootLayout = (RelativeLayout) findViewById(R.id.rootLayout);
-        Snackbar.make(rootLayout, "Your message", Snackbar.LENGTH_SHORT)
-                .setAction("UNDO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                })
-                .show();
     }
 
     @Override
