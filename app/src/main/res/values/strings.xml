@@ -8,9 +8,12 @@
     <string name="ACTION_ALARM_KLAXON">com.goqual.goqualswitch.action.alarm.klaxon</string>
     <string name="ACTION_ALARM_VIEW">com.goqual.goqualswitch.action.alarm.view</string>
 
-    <string name="ACTION_NOTI">com.goqual.goqualswitch.action.noti</string>
-    <string name="ACTION_NOTI_TURN_ON">com.goqual.goqualswitch.action.noti.turn.on</string>
-    <string name="ACTION_NOTI_TURN_OFF">com.goqual.goqualswitch.action.noti.turn.off</string>
+    <string name="ACTION_BROADCAST_NOTI">com.goqual.goqualswitch.action.broadcast.noti</string>
+    <string name="ACTION_BROADCAST_NOTI_RESULT">com.goqual.goqualswitch.action.broadcast.noti.result</string>
+    <string name="ACTION_BROADCAST_NOTI_TURN_ON">com.goqual.goqualswitch.action.broadcast.noti.turn.on</string>
+    <string name="ACTION_BROADCAST_NOTI_TURN_OFF">com.goqual.goqualswitch.action.broadcast.noti.turn.off</string>
+
+    <string name="ACTION_SERVICE_NOTI">com.goqual.goqualswitch.action.service.noti</string>
 
     <string name="key_noti_switch_turn_on">noti_switch_turn_on</string>
 
@@ -33,8 +36,8 @@
     <string name="key_panelheight">panelHeight</string>
     <string name="key_didSplash">didSplash</string>
 
-    <string name="noti_ticket">Blueswitch easy turn on/off mode</string>
-    <string name="noti_title">Blueswitch easy turn on/off mode</string>
-    <string name="noti_turn_on">If you want to turn off the light, click this!</string>
-    <string name="noti_turn_off">If you want to turn on the light, click this!</string>
+    <string name="noti_ticket">손쉽게 블루스위치를 동작시켜보세요!</string>
+    <string name="noti_title">손쉬운 블루스위치 동작</string>
+    <string name="noti_turn_on">불을 끄고 싶다면, 클릭해주세요.</string>
+    <string name="noti_turn_off">불을 켜고 싶다면, 클릭해주세요.</string>
 </resources>

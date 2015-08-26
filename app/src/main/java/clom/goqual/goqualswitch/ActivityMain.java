@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.widget.Button;
 import android.widget.Toast;
@@ -32,9 +34,9 @@ public class ActivityMain extends Activity {
                 startActivity(alarmIntent);
                 break;
             case R.id.btn_noti:
-                Intent notiIntent = new Intent(getString(R.string.ACTION_NOTI));
-                notiIntent.setAction(getString(R.string.ACTION_NOTI));
+                Intent notiIntent = new Intent(getString(R.string.ACTION_SERVICE_NOTI));
                 notiIntent.putExtra(getString(R.string.key_noti_switch_turn_on), false);
+
                 startService(notiIntent);
 
                 Toast.makeText(ActivityMain.this, "Notification Registered.", Toast.LENGTH_SHORT).show();
@@ -71,6 +73,17 @@ public class ActivityMain extends Activity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
         handleSharedPreference();
+
+        if (!isContainedInNotificationListeners(getApplicationContext()))
+        {
+            Intent intent = new Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS");
+            startActivityForResult(intent, 2222);
+        }
+    }
+
+    public static boolean isContainedInNotificationListeners(Context ctx) {
+        String enabledListeners = Settings.Secure.getString(ctx.getContentResolver(), "enabled_notification_listeners");
+        return !TextUtils.isEmpty(enabledListeners) && enabledListeners.contains(ctx.getPackageName());
     }
 
     @Override

@@ -30,8 +30,6 @@
         </activity>
         <activity android:name=".Alarm.ActivityRepeat">
         </activity>
-        <activity android:name=".Notification.NotificationHandler">
-        </activity>
 
         <!-- service -->
         <service android:name=".Service.AlarmService"
@@ -63,22 +61,8 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
-                <action android:name="com.goqual.goqualswitch.action.noti"></action>
-            </intent-filter>
-        </service>
-        <service android:name=".Service.NotificationTurnOffService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="com.goqual.goqualswitch.action.service.noti"></action>
                 <action android:name="com.goqual.goqualswitch.action.noti.turn.off"></action>
-            </intent-filter>
-        </service>
-        <service android:name=".Service.NotificationTurnOnService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
                 <action android:name="com.goqual.goqualswitch.action.noti.turn.on"></action>
             </intent-filter>
         </service>
