@@ -37,9 +37,13 @@
     <string name="noti_turn_on">불을 끄고 싶다면, 클릭해주세요.</string>
     <string name="noti_turn_off">불을 켜고 싶다면, 클릭해주세요.</string>
 
-    <!-- menu -->
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
-    <string name="action_websearch">Web search</string>
-    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    <!-- tutorial -->
+    <string name="tutorial_first_title">Start BluewSwitch</string>
+    <string name="tutorial_second_title">Finding BluewSwitch</string>
+    <string name="tutorial_third_title">Found BluewSwitch</string>
+    <string name="tutorial_first_content">If you register BlueSwitch, \nSet your Switch on and Click the find button</string>
+    <string name="tutorial_second_content">Please wait for a moment.</string>
+    <string name="tutorial_third_content">Welcome to BlueSwitch!</string>
+    <string name="PREF_NAME">com.goqual.blueswitchinfo</string>
+    <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
 </resources>

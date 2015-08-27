@@ -1,6 +1,7 @@
-package clom.goqual.goqualswitch;
+package clom.goqual.goqualswitch.Common;
 
-import android.app.NotificationManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,41 +18,18 @@ import android.widget.RelativeLayout;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import clom.goqual.goqualswitch.Main.FragmentMain;
+import clom.goqual.goqualswitch.R;
 import clom.goqual.goqualswitch.SharedPreference.InfoSharedPreference;
 
+/**
+ * Created by ladmusician on 15. 8. 27..
+ */
+public class BaseActivity extends ActionBarActivity {
+    private static final String TAG = "ACTIVITY_BASE";
+    public Context mContext;
+    public InfoSharedPreference mDeviceInfo;
 
-public class ActivityMain extends ActionBarActivity {
-    private static final String TAG = "ACTIVITY_MAIN";
-    private Context mContext;
-    private InfoSharedPreference mDeviceInfo;
-    private NotificationManager mNotiMng = null;
-
-    Toolbar mToolbar;
-    DrawerLayout mDrawerLayout;
-    ActionBarDrawerToggle mDrawerToggle;
-
-    @OnClick({ R.id.menu_rl_aboutus, R.id.menu_rl_help, R.id.menu_rl_newswitch, R.id.menu_rl_none, R.id.menu_rl_versioninfo})
-    void onClickButton (RelativeLayout rl) {
-        switch(rl.getId()) {
-            case R.id.menu_rl_newswitch:
-                mDrawerLayout.closeDrawers();
-                break;
-            case R.id.menu_rl_help:
-                mDrawerLayout.closeDrawers();
-                break;
-            case R.id.menu_rl_aboutus:
-                mDrawerLayout.closeDrawers();
-                break;
-            case R.id.menu_rl_versioninfo:
-                mDrawerLayout.closeDrawers();
-                break;
-            case R.id.menu_rl_none:
-                mDrawerLayout.closeDrawers();
-                break;
-            default:
-                break;
-        }
-    }
 
     /*
     @InjectView(R.id.btn_alarm) Button mBtnAlarm;
@@ -77,6 +55,32 @@ public class ActivityMain extends ActionBarActivity {
     }
     */
 
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    @OnClick({ R.id.menu_rl_aboutus, R.id.menu_rl_help, R.id.menu_rl_newswitch, R.id.menu_rl_none, R.id.menu_rl_versioninfo})
+    void onClickButton (RelativeLayout rl) {
+        switch(rl.getId()) {
+            case R.id.menu_rl_newswitch:
+                mDrawerLayout.closeDrawers();
+                break;
+            case R.id.menu_rl_help:
+                mDrawerLayout.closeDrawers();
+                break;
+            case R.id.menu_rl_aboutus:
+                mDrawerLayout.closeDrawers();
+                break;
+            case R.id.menu_rl_versioninfo:
+                mDrawerLayout.closeDrawers();
+                break;
+            case R.id.menu_rl_none:
+                mDrawerLayout.closeDrawers();
+                break;
+            default:
+                break;
+        }
+    }
     public void handleSharedPreference() {
         // sharedPreference
         if (getDeviceInfo().getValue(getString(R.string.key_panelwidth), -1) == -1
@@ -101,12 +105,20 @@ public class ActivityMain extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = getApplicationContext();
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_base);
         ButterKnife.inject(this);
         handleSharedPreference();
 
         handle_menu();
 
+        Fragment fragment = new FragmentMain();
+
+        Bundle args = new Bundle();
+        args.putInt(FragmentMain.FLAG_FRAGMENT_MAIN, FragmentMain.ARG_FRAGMENT_MAIN);
+        fragment.setArguments(args);
+
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     void handle_menu () {
@@ -116,7 +128,7 @@ public class ActivityMain extends ActionBarActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.app_name, R.string.app_name);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
