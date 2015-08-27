@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GOQUALSWITCH</string>
+    <string name="app_name">BLUESWITCH</string>
     <string name="BASIC_RINGTONE">Basic Ringtone</string>
 
     <string name="shared_preference_name">com.goqual.blueswitchinfo</string>
@@ -8,10 +8,6 @@
     <string name="ACTION_ALARM_KLAXON">com.goqual.goqualswitch.action.alarm.klaxon</string>
     <string name="ACTION_ALARM_VIEW">com.goqual.goqualswitch.action.alarm.view</string>
 
-    <string name="ACTION_BROADCAST_NOTI">com.goqual.goqualswitch.action.broadcast.noti</string>
-    <string name="ACTION_BROADCAST_NOTI_RESULT">com.goqual.goqualswitch.action.broadcast.noti.result</string>
-    <string name="ACTION_BROADCAST_NOTI_TURN_ON">com.goqual.goqualswitch.action.broadcast.noti.turn.on</string>
-    <string name="ACTION_BROADCAST_NOTI_TURN_OFF">com.goqual.goqualswitch.action.broadcast.noti.turn.off</string>
 
     <string name="ACTION_SERVICE_NOTI">com.goqual.goqualswitch.action.service.noti</string>
 
@@ -40,4 +36,10 @@
     <string name="noti_title">손쉬운 블루스위치 동작</string>
     <string name="noti_turn_on">불을 끄고 싶다면, 클릭해주세요.</string>
     <string name="noti_turn_off">불을 켜고 싶다면, 클릭해주세요.</string>
+
+    <!-- menu -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
 </resources>
