@@ -2,6 +2,8 @@
     <string name="app_name">BLUESWITCH</string>
     <string name="BASIC_RINGTONE">Basic Ringtone</string>
 
+    <string name="UNKNOWN_DEVICE">Unknown device</string>
+
     <string name="shared_preference_name">com.goqual.blueswitchinfo</string>
 
     <string name="ACTION_ALARM">com.goqual.goqualswitch.action.alarm</string>
@@ -46,4 +48,7 @@
     <string name="tutorial_third_content">Welcome to BlueSwitch!</string>
     <string name="PREF_NAME">com.goqual.blueswitchinfo</string>
     <string name="error_bluetooth_not_supported">Bluetooth not supported.</string>
+
+    <!-- find ble device -->
+    <string name="DIALOG_FIND_BLUESWITCH">블루스위치를 찾고 있습니다.</string>
 </resources>

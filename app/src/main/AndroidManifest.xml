@@ -22,6 +22,7 @@
         <meta-data android:name="QUERY_LOG" android:value="true" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="clom.goqual.goqualswitch" />
 
+        <!-- common -->
         <activity
             android:name=".Common.BaseActivity"
             android:label="@string/app_name" >
@@ -30,12 +31,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <!-- BLE -->
+        <service android:name=".BLE.Service.BluetoothLeService"></service>
+
+
+        <!-- Notification -->
+        <service android:name=".Service.NotificationService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="com.goqual.goqualswitch.action.service.noti"></action>
+                <action android:name="com.goqual.goqualswitch.action.noti.turn.off"></action>
+                <action android:name="com.goqual.goqualswitch.action.noti.turn.on"></action>
+            </intent-filter>
+        </service>
+
+
+
+        <!-- Alarm -->
         <activity android:name=".Alarm.ActivityCreateAlarm">
         </activity>
         <activity android:name=".Alarm.ActivityRepeat">
         </activity>
-
-        <!-- service -->
         <service android:name=".Service.AlarmService"
             android:enabled="true"
             android:exported="false">
@@ -58,16 +78,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
                 <action android:name="com.goqual.goqualswitch.action.alarm.view"></action>
-            </intent-filter>
-        </service>
-        <service android:name=".Service.NotificationService"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
-                <action android:name="com.goqual.goqualswitch.action.service.noti"></action>
-                <action android:name="com.goqual.goqualswitch.action.noti.turn.off"></action>
-                <action android:name="com.goqual.goqualswitch.action.noti.turn.on"></action>
             </intent-filter>
         </service>
     </application>

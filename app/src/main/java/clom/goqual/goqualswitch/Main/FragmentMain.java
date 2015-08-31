@@ -2,7 +2,6 @@ package clom.goqual.goqualswitch.Main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,8 @@ public class FragmentMain extends BaseFragment {
     void onClickButton (ImageButton btn) {
         switch (btn.getId()) {
             case R.id.tutorial_btn_findswitch:
-                Log.e(TAG, "check");
+                break;
+            default:
                 break;
         }
     }

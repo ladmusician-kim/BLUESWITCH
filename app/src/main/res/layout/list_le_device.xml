@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:id="@+id/card_bt_txt_img" />
+            android:id="@+id/list_bt_txt_img" />
 
     </RelativeLayout>
 
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="New Text"
-            android:id="@+id/card_bt_txt_name" />
+            android:id="@+id/list_bt_txt_name" />
 
     </RelativeLayout>
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="New Text"
-            android:id="@+id/card_bt_txt_mac" />
+            android:id="@+id/list_bt_txt_mac" />
 
     </RelativeLayout>
 </LinearLayout>

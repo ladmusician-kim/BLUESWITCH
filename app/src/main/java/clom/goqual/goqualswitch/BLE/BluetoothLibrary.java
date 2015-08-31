@@ -17,8 +17,9 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-import clom.goqual.goqualswitch.Adapter.BluetoothDeviceViewAdapter;
+import clom.goqual.goqualswitch.Adapter.LeDeviceListAdapter;
 import clom.goqual.goqualswitch.BLE.Service.BluetoothLeService;
+import clom.goqual.goqualswitch.DTO.BluetoothDeviceDTO;
 import clom.goqual.goqualswitch.R;
 
 /**
@@ -30,16 +31,23 @@ public class BluetoothLibrary extends Fragment {
     private Context mContext;
     private BluetoothManager mBluetoothMng;
     private BluetoothAdapter mBluetoothAdapter;
-    private BluetoothDeviceViewAdapter mBluetoothDeviceViewAdapter;
     private BluetoothLeService mBluetoothLeService;
+    private AlertDialog mDiaglogBloothLeDevice;
+    private LeDeviceListAdapter mLeDeviceListAdapter = null;
+
+    // state
+    private boolean mScanning = false;
+
+    // blueswitch
+    private String mBSName;
+    private String mBSAddress;
 
     private ConnectionState mConnectionState = ConnectionState.isNull;
 
     private static final long SCAN_PERIOD = 10000;
 
     public void onCreateProcess() {
-        if(!initiate())
-        {
+        if (!initiate()) {
             Toast.makeText(mContext, R.string.error_bluetooth_not_supported,
                     Toast.LENGTH_SHORT).show();
             ((Activity) mContext).finish();
@@ -47,6 +55,8 @@ public class BluetoothLibrary extends Fragment {
 
         Intent gattServiceIntent = new Intent(mContext, BluetoothLeService.class);
         mContext.bindService(gattServiceIntent, mServiceConnection, Context.BIND_AUTO_CREATE);
+
+        handle_dialog();
     }
 
     public boolean initiate() {
@@ -65,11 +75,11 @@ public class BluetoothLibrary extends Fragment {
     }
 
     // Code to manage Service lifecycle.
-    private final ServiceConnection mServiceConnection = new ServiceConnection() {
-
+    public final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
             System.out.println("mServiceConnection onServiceConnected");
+
             mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
             if (!mBluetoothLeService.initialize()) {
                 Log.e(TAG, "Unable to initialize Bluetooth");
@@ -84,36 +94,123 @@ public class BluetoothLibrary extends Fragment {
         }
     };
 
+    public void scanLeDevice(final boolean enable) {
+        if (enable) {
+            if (mLeDeviceListAdapter != null) {
+                mLeDeviceListAdapter.clear();
+                mLeDeviceListAdapter.notifyDataSetChanged();
+            }
+            if(!mScanning) {
+                mScanning = true;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mBluetoothAdapter.stopLeScan(mLeScanCallback);
+                        mScanning = false;
+                    }
+                }, SCAN_PERIOD);
 
 
+                mBluetoothAdapter.startLeScan(mLeScanCallback);
+            }
 
-
-    public void scanLeDevice() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        } else {
+            if(mScanning)
+            {
+                mScanning = false;
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
             }
-        }, SCAN_PERIOD);
+        }
 
-        mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
 
     // Device scan callback.
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
-            mBluetoothDeviceViewAdapter = getBluetoothDevicViewAdapter();
             ((Activity) mContext).runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    mBluetoothDeviceViewAdapter.addDevice(device);
-                    mBluetoothDeviceViewAdapter.notifyDataSetChanged();
+                    mLeDeviceListAdapter.addDevice(device);
+                    mLeDeviceListAdapter.notifyDataSetChanged();
                 }
             });
         }
     };
 
+    private void handle_dialog() {
+        // Initializes and show the scan Device Dialog
+        mLeDeviceListAdapter = new LeDeviceListAdapter(mContext);
+        mDiaglogBloothLeDevice = new AlertDialog.Builder(mContext)
+                .setTitle(getString(R.string.DIALOG_FIND_BLUESWITCH))
+                .setAdapter(mLeDeviceListAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        handle_dialog_item_click(position);
+                    }
+                })
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+                    @Override
+                    public void onCancel(DialogInterface arg0) {
+                        mConnectionState = ConnectionState.isToScan;
+                        //onConectionStateChange(mConnectionState);
+                        mDiaglogBloothLeDevice.dismiss();
+
+                        scanLeDevice(false);
+                    }
+                }).create();
+    }
+
+    private void handle_dialog_item_click (int position) {
+        final BluetoothDeviceDTO device = mLeDeviceListAdapter.getDevice(position);
+        if (device == null) return;
+
+        scanLeDevice(false);
+
+        mBSName = device.getBLEName();
+        mBSAddress = device.getMacAddress();
+
+        if (mBSName.equals("No Device Available") && mBSAddress.equals("No Address Available")) {
+            mConnectionState = ConnectionState.isToScan;
+            //onConectionStateChange(mConnectionState);
+        } else {
+            if (mBluetoothLeService.connect(mBSAddress)) {
+                Log.e(TAG, "Connect request success");
+                mConnectionState = ConnectionState.isConnecting;
+                //onConectionStateChange(mConnectionState);
+                new Handler().postDelayed(mConnectingOverTimeRunnable, 10000);
+            } else {
+                Log.d(TAG, "Connect request fail");
+                mConnectionState = ConnectionState.isToScan;
+                //onConectionStateChange(mConnectionState);
+            }
+        }
+    }
+    private Runnable mConnectingOverTimeRunnable=new Runnable(){
+        @Override
+        public void run() {
+            if(mConnectionState==ConnectionState.isConnecting)
+                mConnectionState=ConnectionState.isToScan;
+            //onConectionStateChange(mConnectionState);
+            mBluetoothLeService.close();
+        }};
+
+    private Runnable mDisonnectingOverTimeRunnable=new Runnable(){
+        @Override
+        public void run() {
+            if(mConnectionState==ConnectionState.isDisconnecting)
+                mConnectionState=ConnectionState.isToScan;
+            //onConectionStateChange(mConnectionState);
+            mBluetoothLeService.close();
+        }};
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        mParentActivity = activity;
+        super.onAttach(activity);
+    }
     private BluetoothManager getBluetoothMng() {
         if (mBluetoothAdapter != null) {
             return mBluetoothMng;
@@ -127,25 +224,5 @@ public class BluetoothLibrary extends Fragment {
         }
 
         return mBluetoothMng.getAdapter();
-    }
-    private BluetoothDeviceViewAdapter getBluetoothDevicViewAdapter() {
-        if (mBluetoothDeviceViewAdapter != null) {
-            return mBluetoothDeviceViewAdapter;
-        }
-
-        return new BluetoothDeviceViewAdapter(mContext);
-    }
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mContext = getActivity().getApplicationContext();
-    }
-    */
-
-    @Override
-    public void onAttach(Activity activity) {
-        mParentActivity = activity;
-        super.onAttach(activity);
     }
 }
